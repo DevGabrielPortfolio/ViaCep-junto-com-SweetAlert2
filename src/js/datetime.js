@@ -78,7 +78,54 @@ form.addEventListener('submit', async (event) =>{
         return;
     }
     
-    try
+    try{
+        // Exibir indicador de carregamento durante
+        Swal.fire({
+            title: 'Consultando endereço...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        // Construir UTL da API ViaCep com os parâmetros codificados
+        // Codificar cidade e logradouro para evitar problemas com caracteres especiais
+        const cidadeEncoded = encodeURIComponent(cidade);
+        const logradouroEncoded = encodeURIComponent(logradouro);
+        const url = `https://viacep.com.br/ws/${uf}/${cidadeEncoded}/${logradouroEncoded}/json/`;
+
+        // Realizar consulta à API ViaCep e aguardar resposta
+        // AWAIT = espera pois esta sendo usando uma função assíncrona
+        const data = await consultaViaCep(url);
+
+        // Fechar indicador de carregamento após receber resposta
+        Swal.close();
+
+        // Limpar resultados anteriores
+        resultContainer.innerHTML = '';
+
+        // Verificar se a consulta retornou resultado
+        if(data && data.length > 0){
+            // Criar tabela para exibir os resultados da consulta
+            const table = document.createElement('table');
+            table.className = 'results__table';
+
+            // Criar cabeçalho da tabela (thead)
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+
+            // Definir as colunas que serão exibidas na tabela
+            const headers = ['CEP', 'Logradouro', 'Bairro'];
+            // Criar células do cabeçalho para cada coluna
+            headers.forEach(headerText =>{
+
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                headerRow.appendChild(th);
+
+            });
+        }
+    }
 
 });
 
