@@ -124,10 +124,95 @@ form.addEventListener('submit', async (event) =>{
                 headerRow.appendChild(th);
 
             });
+
+            // Adiciona linha de cabeçalho ao thead
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Criar corpo da tabela (tbody) para os dados
+            const tbody = document.createElement('tbody');
+            // **********Criação da tabela**********
+
+            // **********Popular a tabela**********
+            // Interar sobre os elementos retornados da API
+            data.forEach(item =>{
+
+                // Criar uma nova linha para cada endereço
+                const row = document.createElement('tr');
+
+                // Criar e preencher célula do CEP
+                const cellCep = document.createElement('td');
+                cellCep.textContent = item.cep;
+                row.appendChild(cellCep);
+
+                // Criar e preencher célula do LOGRADOURO
+                const cellLogradouro = document.createElement('td');
+                cellCep.textContent = item.logradouro;
+                row.appendChild(cellLogradouro);
+
+                // Criar e preencher célula do BAIRRO
+                const cellBairro = document.createElement('td');
+                cellCep.textContent = item.bairro;
+                row.appendChild(cellBairro);
+
+                // Adicionar linha completa ao corpo da tabela
+                tbody.appendChild(row);
+
+            });
+
+            // Adicionar corpo da tabela e a tabela completa ao container de resultados
+            table.appendChild(tbody);
+            resultContainer.appendChild(table);
+
+        }else{
+            await Swal.fire({
+                icon: 'info',
+                title: 'Nenhum resultado encontrado',
+                text: 'Não foram encontrados endereços com os critérios informados.',
+                confirmButtonColor: '#117000'
+            });
         }
+    }catch(error){
+        await Swal.fire({
+            icon: 'error',
+            title: 'Erro na consulta',
+            text: 'Ocorreu um erro ao consultar o endereço. Tente novamente.',
+            confirmButtonColor: '#117000'
+        });
     }
 
 });
 
 // Adicionar evento de clique ao botão de nova consulta
-document.querySelector('#novaConsulta').addEventListener();
+document.querySelector('#novaConsulta').addEventListener('click', async () => {
+
+    // Limpar formulário e área de resultados
+    form.reset();
+    resultContainer.innerHTML = '';
+    await Swal.fire({
+
+        icon: 'success',
+        title: 'Formulário limpo',
+        text: 'Você pode realizar uma nova consulta agora.',
+        confirmButtonColor: '#117000',
+        timer: 4000,
+        timerProgressBar: true
+
+    });
+
+});
+
+// Função para realizar consulta à API ViaCep
+const consultaViaCep = async (url) => {
+
+    try {
+
+        // Realiza a requisição HTTP GET
+
+    } catch (error) {
+
+        // Propaga o erro para ser tratado pelo
+        throw error;
+    }
+
+}
