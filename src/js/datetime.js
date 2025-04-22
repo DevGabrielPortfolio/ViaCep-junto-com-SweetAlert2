@@ -147,12 +147,12 @@ form.addEventListener('submit', async (event) =>{
 
                 // Criar e preencher célula do LOGRADOURO
                 const cellLogradouro = document.createElement('td');
-                cellCep.textContent = item.logradouro;
+                cellLogradouro.textContent = item.logradouro;
                 row.appendChild(cellLogradouro);
 
                 // Criar e preencher célula do BAIRRO
                 const cellBairro = document.createElement('td');
-                cellCep.textContent = item.bairro;
+                cellBairro.textContent = item.bairro;
                 row.appendChild(cellBairro);
 
                 // Adicionar linha completa ao corpo da tabela
@@ -207,12 +207,21 @@ const consultaViaCep = async (url) => {
 
     try {
 
-        // Realiza a requisição HTTP GET
+        // Realiza a requisição HTTP GET para a API ViaCep
+        const response = await fetch(url);
+
+        // Verifica se a resposta da API foi bem-sucedida (status 200-299)
+        if(!response.ok) {
+            throw new error('Erro na requisição: ' + response);
+        }
+
+        // Converte a resposta da API (em formato JSON) para um objeto JavaScript que pode ser manipulado no código
+        return await response.json();
 
     } catch (error) {
 
-        // Propaga o erro para ser tratado pelo
+        // Propaga o erro para ser tratado pelo código chamador
         throw error;
     }
 
-}
+};
